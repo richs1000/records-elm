@@ -1,0 +1,292 @@
+var _user$project$MyRecords$extractValueFromRecord = F2(
+	function (rec, key) {
+		extractValueFromRecord:
+		while (true) {
+			var _p0 = rec;
+			if (_p0.ctor === '[]') {
+				return _elm_lang$core$Maybe$Nothing;
+			} else {
+				if (_elm_lang$core$Native_Utils.eq(_p0._0._0, key)) {
+					return _elm_lang$core$Maybe$Just(_p0._0._1);
+				} else {
+					var _v1 = _p0._1,
+						_v2 = key;
+					rec = _v1;
+					key = _v2;
+					continue extractValueFromRecord;
+				}
+			}
+		}
+	});
+var _user$project$MyRecords$extractItemFromRecord = F2(
+	function (rec, key) {
+		extractItemFromRecord:
+		while (true) {
+			var _p1 = rec;
+			if (_p1.ctor === '[]') {
+				return _elm_lang$core$Maybe$Nothing;
+			} else {
+				var _p2 = _p1._0._0;
+				if (_elm_lang$core$Native_Utils.eq(_p2, key)) {
+					return _elm_lang$core$Maybe$Just(
+						{ctor: '_Tuple2', _0: _p2, _1: _p1._0._1});
+				} else {
+					var _v4 = _p1._1,
+						_v5 = key;
+					rec = _v4;
+					key = _v5;
+					continue extractItemFromRecord;
+				}
+			}
+		}
+	});
+var _user$project$MyRecords$recordTo = F4(
+	function (recItemTo, leftDelimeter, rightDelimeter, rec) {
+		var helperFunc = function (rec$) {
+			var _p3 = rec$;
+			if (_p3.ctor === '[]') {
+				return '';
+			} else {
+				if (_p3._1.ctor === '[]') {
+					return recItemTo(_p3._0);
+				} else {
+					return A2(
+						_elm_lang$core$Basics_ops['++'],
+						recItemTo(_p3._0),
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							', ',
+							helperFunc(_p3._1)));
+				}
+			}
+		};
+		return A2(
+			_elm_lang$core$Basics_ops['++'],
+			leftDelimeter,
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				helperFunc(rec),
+				rightDelimeter));
+	});
+var _user$project$MyRecords$recordKeyToString = function (_p4) {
+	var _p5 = _p4;
+	return _p5._0;
+};
+var _user$project$MyRecords$recordKeys = function (rec) {
+	var _p6 = rec;
+	if (_p6.ctor === '[]') {
+		return _elm_lang$core$Native_List.fromArray(
+			[]);
+	} else {
+		return A2(
+			_elm_lang$core$List_ops['::'],
+			_user$project$MyRecords$recordKeyToString(_p6._0),
+			_user$project$MyRecords$recordKeys(_p6._1));
+	}
+};
+var _user$project$MyRecords$recordValueToString = function (_p7) {
+	var _p8 = _p7;
+	var _p9 = _p8._1;
+	switch (_p9.ctor) {
+		case 'RandomInt':
+			return _elm_lang$core$Basics$toString(_p9._0);
+		case 'RandomString':
+			return _elm_lang$core$Basics$toString(_p9._0);
+		default:
+			return _elm_lang$core$Basics$toString(_p9._0);
+	}
+};
+var _user$project$MyRecords$recordItemToString = function (r) {
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		_user$project$MyRecords$recordKeyToString(r),
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			' : ',
+			_user$project$MyRecords$recordValueToString(r)));
+};
+var _user$project$MyRecords$recordToString = function (rec) {
+	return A4(_user$project$MyRecords$recordTo, _user$project$MyRecords$recordItemToString, '{', '}', rec);
+};
+var _user$project$MyRecords$recordValues = function (rec) {
+	var _p10 = rec;
+	if (_p10.ctor === '[]') {
+		return _elm_lang$core$Native_List.fromArray(
+			[]);
+	} else {
+		return A2(
+			_elm_lang$core$List_ops['::'],
+			_user$project$MyRecords$recordValueToString(_p10._0),
+			_user$project$MyRecords$recordValues(_p10._1));
+	}
+};
+var _user$project$MyRecords$recordItemToWrongTypeString = function (_p11) {
+	var _p12 = _p11;
+	var _p13 = _p12._1;
+	switch (_p13.ctor) {
+		case 'RandomInt':
+			return 'string';
+		case 'RandomString':
+			return 'bool';
+		default:
+			return 'int';
+	}
+};
+var _user$project$MyRecords$recordToWrongTypeString = function (rec) {
+	return A4(_user$project$MyRecords$recordTo, _user$project$MyRecords$recordItemToWrongTypeString, '{', '}', rec);
+};
+var _user$project$MyRecords$recordItemToTypeString = function (_p14) {
+	var _p15 = _p14;
+	var _p16 = _p15._1;
+	switch (_p16.ctor) {
+		case 'RandomInt':
+			return 'int';
+		case 'RandomString':
+			return 'string';
+		default:
+			return 'bool';
+	}
+};
+var _user$project$MyRecords$recordToTypeString = function (rec) {
+	return A4(_user$project$MyRecords$recordTo, _user$project$MyRecords$recordItemToTypeString, '{', '}', rec);
+};
+var _user$project$MyRecords$RandomBool = function (a) {
+	return {ctor: 'RandomBool', _0: a};
+};
+var _user$project$MyRecords$RandomString = function (a) {
+	return {ctor: 'RandomString', _0: a};
+};
+var _user$project$MyRecords$RandomInt = function (a) {
+	return {ctor: 'RandomInt', _0: a};
+};
+var _user$project$MyRecords$randomRecordItem = function (randomValues) {
+	var rType = A3(
+		_user$project$RandomStuff$pickOne,
+		randomValues,
+		_elm_lang$core$Native_List.fromArray(
+			[1, 2, 3]),
+		1);
+	var randStrings = _elm_lang$core$Native_List.fromArray(
+		['dog', 'cat', 'pig', 'moose', 'cow', 'bird', 'red', 'green', 'blue', 'white', 'black']);
+	var rKey = A3(
+		_user$project$RandomStuff$pickOne,
+		A2(_elm_lang$core$List$drop, 1, randomValues),
+		randStrings,
+		'foo');
+	var _p17 = rType;
+	switch (_p17) {
+		case 1:
+			var rVal = A3(
+				_user$project$RandomStuff$pickOne,
+				A2(_elm_lang$core$List$drop, 2, randomValues),
+				_elm_lang$core$Native_List.fromArray(
+					[1, 2]),
+				1);
+			return _elm_lang$core$Native_Utils.eq(rVal, 1) ? {
+				ctor: '_Tuple2',
+				_0: rKey,
+				_1: _user$project$MyRecords$RandomBool(true)
+			} : {
+				ctor: '_Tuple2',
+				_0: rKey,
+				_1: _user$project$MyRecords$RandomBool(false)
+			};
+		case 2:
+			var rVal = A3(
+				_user$project$RandomStuff$pickOne,
+				A2(_elm_lang$core$List$drop, 2, randomValues),
+				_elm_lang$core$Native_List.range(0, 9),
+				1);
+			return {
+				ctor: '_Tuple2',
+				_0: rKey,
+				_1: _user$project$MyRecords$RandomInt(rVal)
+			};
+		default:
+			var rVal = A3(
+				_user$project$RandomStuff$pickOne,
+				A2(_elm_lang$core$List$drop, 2, randomValues),
+				randStrings,
+				'cat');
+			return {
+				ctor: '_Tuple2',
+				_0: rKey,
+				_1: _user$project$MyRecords$RandomString(rVal)
+			};
+	}
+};
+var _user$project$MyRecords$randomRecordValue = function (randomValues) {
+	var rType = A3(
+		_user$project$RandomStuff$pickOne,
+		randomValues,
+		_elm_lang$core$Native_List.fromArray(
+			[1, 2, 3]),
+		1);
+	var randStrings = _elm_lang$core$Native_List.fromArray(
+		['dog', 'cat', 'pig', 'moose', 'cow', 'bird', 'red', 'green', 'blue', 'white', 'black']);
+	var _p18 = rType;
+	switch (_p18) {
+		case 1:
+			var rVal = A3(
+				_user$project$RandomStuff$pickOne,
+				A2(_elm_lang$core$List$drop, 1, randomValues),
+				_elm_lang$core$Native_List.fromArray(
+					[1, 2]),
+				1);
+			return _elm_lang$core$Native_Utils.eq(rVal, 1) ? _user$project$MyRecords$RandomBool(true) : _user$project$MyRecords$RandomBool(false);
+		case 2:
+			var rVal = A3(
+				_user$project$RandomStuff$pickOne,
+				A2(_elm_lang$core$List$drop, 1, randomValues),
+				_elm_lang$core$Native_List.range(0, 9),
+				1);
+			return _user$project$MyRecords$RandomInt(rVal);
+		default:
+			var rVal = A3(
+				_user$project$RandomStuff$pickOne,
+				A2(_elm_lang$core$List$drop, 1, randomValues),
+				randStrings,
+				'cat');
+			return _user$project$MyRecords$RandomString(rVal);
+	}
+};
+var _user$project$MyRecords$randomRecordValues = F2(
+	function (randomValues, cnt) {
+		return _elm_lang$core$Native_Utils.eq(cnt, 0) ? _elm_lang$core$Native_List.fromArray(
+			[]) : A2(
+			_elm_lang$core$List_ops['::'],
+			_user$project$MyRecords$randomRecordValue(randomValues),
+			A2(
+				_user$project$MyRecords$randomRecordValues,
+				A2(_elm_lang$core$List$drop, 2, randomValues),
+				cnt - 1));
+	});
+var _user$project$MyRecords$randomRecord = function (randomValues) {
+	var recordLen = A3(
+		_user$project$RandomStuff$pickOne,
+		randomValues,
+		_elm_lang$core$Native_List.fromArray(
+			[2, 3, 4]),
+		3);
+	var randStrings = _elm_lang$core$Native_List.fromArray(
+		['dog', 'cat', 'pig', 'moose', 'cow', 'bird', 'red', 'green', 'blue', 'white', 'black']);
+	var keys = _user$project$RandomStuff$compressList(
+		A4(
+			_user$project$RandomStuff$pickABunch,
+			A2(_elm_lang$core$List$drop, 1, randomValues),
+			recordLen,
+			randStrings,
+			'foo'));
+	var values = A2(
+		_user$project$MyRecords$randomRecordValues,
+		A2(_elm_lang$core$List$drop, recordLen + 1, randomValues),
+		_elm_lang$core$List$length(keys));
+	return A3(
+		_elm_lang$core$List$map2,
+		F2(
+			function (v0, v1) {
+				return {ctor: '_Tuple2', _0: v0, _1: v1};
+			}),
+		keys,
+		values);
+};
